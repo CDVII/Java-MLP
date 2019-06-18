@@ -74,10 +74,6 @@ public class MLPExample2 {
 		System.out.println("Answer " + testAnswerIndexList[randomIndex] + "'s predict result.");
 		for(int i=0; i<predict.length; ++i)
 			System.out.printf("\tprobability %d = %.3f\n", i, predict[i]);
-		
-		
-		//MultiLayerPerceptron1 mlp = new MultiLayerPerceptron1(NEURON_COUNT);
-		//System.out.println(mlp.training(TRAIN_COUNT, inputDataList, answerIndexList));
 	}
 	
 	/**
