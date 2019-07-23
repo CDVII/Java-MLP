@@ -1,4 +1,4 @@
-﻿import java.util.Random;
+import java.util.Random;
 
 /**
  * 분류를 위한 MultiLayerPerceptron
@@ -83,10 +83,10 @@ public class MLP {
 	 * @return epoch훈련의 각 항목과 전체에 대한 정답률이 기록된 정확도 정보 반환[훈련횟수][출력층 개수+1][3]
 	 */
 	public double[][][] train(int trainCount, double[][] trainInputDataList, int[] trainAnswerIndexList) {
-		double[][][] accuracyList = new double[trainCount][][];
+		double[][][] accuracyEpochList = new double[trainCount][][];
 		for(int trainIndex = 0; trainIndex < trainCount; ++trainIndex)
-			accuracyList[trainIndex] = epoch(trainInputDataList, trainAnswerIndexList, true);
-		return accuracyList;
+			accuracyEpochList[trainIndex] = epoch(trainInputDataList, trainAnswerIndexList, true);
+		return accuracyEpochList;
 	}
 	
 	/**
@@ -126,7 +126,7 @@ public class MLP {
 		for(int layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
 			output[layerIndex] = new double[neuralCount[layerIndex]];
 			for(int perceptronIndex = 0; perceptronIndex < neuralCount[layerIndex]; ++perceptronIndex) {
-				if(layerIndex == 0)				// 입력층 : inputData값을 그래도 사용
+				if(layerIndex == 0)				// 입력층 : inputData값을 그대로 사용
 					output[layerIndex][perceptronIndex] = inputData[perceptronIndex];
 				else {
 					double sum = -neuralNetwork[layerIndex-1][perceptronIndex].getThreshold();	// sum = -threshold;
@@ -168,7 +168,7 @@ public class MLP {
 						neuralNetwork[layerIndex-1][perceptronIndex].addWeight(weightIndex, learningRate * outputList[layerIndex-1][weightIndex] * errorGradient[layerIndex-1][perceptronIndex]);
 					
 					// 출력층 뉴런의 임계값 갱신 (다음 임계값 = 현재 임계값 + 학습률 * -1 * 해당 오차기울기)
-					neuralNetwork[layerIndex-1][perceptronIndex].setThreshold(learningRate * -1 * errorGradient[layerIndex-1][perceptronIndex]);
+					neuralNetwork[layerIndex-1][perceptronIndex].addThreshold(learningRate * -1 * errorGradient[layerIndex-1][perceptronIndex]);
 				}
 				else {								// 중간층
 					
